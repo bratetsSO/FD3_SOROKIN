@@ -1,0 +1,8 @@
+﻿.FilterBlock .wordList{
+  display: block;
+  margin-top: 5px;
+}
+
+.FilterBlock .inputText{
+  margin: 0px 5px;
+}
