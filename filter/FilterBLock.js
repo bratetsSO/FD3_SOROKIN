@@ -3,71 +3,60 @@
   displayName: 'FilterBlock',
 
   propTypes: {
-    strArray: React.PropTypes.arrayOf(React.PropTypes.string)
+    strArray: React.PropTypes.arrayOf(React.PropTypes.string),
+    checkboxValue: React.PropTypes.bool,
+    inputtextValue: React.PropTypes.string
   },
 
   getInitialState: function () {
-    var optionsArr = [];
-    var i = 0;
-    var optionRec;
-    this.props.strArray.forEach(element => {
-      i++;
-      optionRec =
-        React.DOM.option({ key: i, value: i }, element
-        )
-      optionsArr.push(optionRec);
-    });
-    return { options: optionsArr };
+    var optionsArr = this.props.strArray.map(
+      (word, i) => React.DOM.option({ key: i, value: i }, word)
+    )
+    return { options: optionsArr, checkboxValue: false, inputtextValue: '' };
   },
 
-  optionsToArray: function (optColl) {
-    //let optionColl = selElem.options;
-    let tmpArr = [];
-    for (let i = 0; i < optColl.length; i++) {
-      tmpArr[i] = [];
-      tmpArr[i][0] = optColl[i].text;
-      tmpArr[i][1] = optColl[i].value;
-    };
-    return tmpArr;
+  changeCheckbox: function (EO) {
+    this.setState ({checkboxValue: EO.target.checked}, this.updateWordList)
   },
 
-  arrayToOption: function (arrOptions) {
-    arrOptions.forEach((element, i) => {
-      let op = new Option(element[i][0], element[i][1]);
-      let optColl;
-      optColl.add(op,i);
-    });
-    return optColl;
+  changeInputText: function (EO) {
+    this.setState ({inputtextValue: EO.target.value}, this.updateWordList)
   },
 
-  checkboxValueChange: function (EO) {
-    console.log('runSort: значене изменилось на - ' + EO.target.checked);
-    let selElem = document.getElementById("wordList");
-    let optColl = selElem.options;
-    let optArr = this.optionsToArray(optColl);//options to array
-    //var optArr = Array.from(optColl).map(option => option.value); 
-    
-    if (EO.target.checked) {
-      optArr.sort();
+  resetConditions: function(EO){
+    this.setState ({checkboxValue: false, inputtextValue: '' }, this.updateWordList)
+  },
+
+  updateWordList: function () {
+    let wordArr = this.props.strArray.map(item => item); // исходный массив слов (если не "map", то сортируется и props.strArray )
+    let checkboxValue = this.state.checkboxValue;
+    let inputtextValue = this.state.inputtextValue;
+    let optWordArr = [];
+    let newWordArr = [];
+
+    //сортировка
+    if (checkboxValue == true) {
+      newWordArr = wordArr.sort();
     } else {
-      optArr.sort();
-    }
-    //чистим options
-    while (optColl.length > 0) {
-      selElem.options[0] = null;
-    }
+      newWordArr = wordArr;
+    };
+    //фильтрация
+    if (inputtextValue) {
+      newWordArr = newWordArr.filter(item => item.indexOf(inputtextValue) != -1);
+    };
 
-    //this.arrayToOption(optArr);
-
-    this.setState({ options: this.arrayToOption(optArr) });
+    optWordArr = newWordArr.map(
+      (word, i) => React.DOM.option({ key: i, value: i }, word)
+    );
+    this.setState({ options: optWordArr });
   },
 
   render: function () {
     return React.DOM.div({ className: 'FilterBlock' },
       React.DOM.form({ name: 'FilterForm' },
-        React.DOM.input({ type: 'checkbox', name: 'runSort', defaultChecked: false, onChange: this.checkboxValueChange }),
-        React.DOM.input({ type: 'text', className: 'inputText', placeholder: 'Напишите сюда буквы..', onChange: this.inputtextValueChange }),
-        React.DOM.input({ type: 'button', value: 'Сброс', onClick: this.getInitialState }),
+        React.DOM.input({ type: 'checkbox', name: 'runSort', onChange: this.changeCheckbox, checked: this.state.checkboxValue }),
+        React.DOM.input({ type: 'text', name: 'inputFilter', className: 'inputText', placeholder: 'Напишите сюда буквы..', onChange: this.changeInputText, value: this.state.inputtextValue }),
+        React.DOM.input({ type: 'button', value: 'Сброс', onClick: this.resetConditions }),
         React.DOM.select({ id: 'wordList', size: 5 },
           ({}, this.state.options)
         ),
