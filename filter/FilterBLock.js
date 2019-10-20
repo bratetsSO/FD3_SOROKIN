@@ -16,15 +16,15 @@
   },
 
   changeCheckbox: function (EO) {
-    this.setState ({checkboxValue: EO.target.checked}, this.updateWordList)
+    this.setState({ checkboxValue: EO.target.checked }, this.updateWordList)
   },
 
   changeInputText: function (EO) {
-    this.setState ({inputtextValue: EO.target.value}, this.updateWordList)
+    this.setState({ inputtextValue: EO.target.value }, this.updateWordList)
   },
 
-  resetConditions: function(EO){
-    this.setState ({checkboxValue: false, inputtextValue: '' }, this.updateWordList)
+  resetConditions: function (EO) {
+    this.setState({ checkboxValue: false, inputtextValue: '' }, this.updateWordList)
   },
 
   updateWordList: function () {
@@ -32,20 +32,18 @@
     let checkboxValue = this.state.checkboxValue;
     let inputtextValue = this.state.inputtextValue;
     let optWordArr = [];
-    let newWordArr = [];
+    //let newWordArr = [];
 
     //сортировка
     if (checkboxValue == true) {
-      newWordArr = wordArr.sort();
-    } else {
-      newWordArr = wordArr;
+      wordArr = wordArr.sort();
     };
     //фильтрация
     if (inputtextValue) {
-      newWordArr = newWordArr.filter(item => item.indexOf(inputtextValue) != -1);
+      wordArr = wordArr.filter(item => item.indexOf(inputtextValue) != -1);
     };
 
-    optWordArr = newWordArr.map(
+    optWordArr = wordArr.map(
       (word, i) => React.DOM.option({ key: i, value: i }, word)
     );
     this.setState({ options: optWordArr });
