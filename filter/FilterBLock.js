@@ -9,10 +9,7 @@
   },
 
   getInitialState: function () {
-    var optionsArr = this.props.strArray.map(
-      (word, i) => React.DOM.option({ key: i, value: i }, word)
-    )
-    return { options: optionsArr, checkboxValue: false, inputtextValue: '' };
+    return { options: this.props.strArray, checkboxValue: false, inputtextValue: '' };
   },
 
   changeCheckbox: function (EO) {
@@ -43,20 +40,24 @@
       wordArr = wordArr.filter(item => item.indexOf(inputtextValue) != -1);
     };
 
-    optWordArr = wordArr.map(
+    /*optWordArr = wordArr.map(
       (word, i) => React.DOM.option({ key: i, value: i }, word)
-    );
-    this.setState({ options: optWordArr });
+    );*/
+    this.setState({ options: wordArr });
   },
 
-  render: function () {
+  render: function() {
+  var optWordArr = this.state.options.map(
+    (word, i) => React.DOM.option({ key: i, value: i }, word)
+    );
+
     return React.DOM.div({ className: 'FilterBlock' },
       React.DOM.form({ name: 'FilterForm' },
         React.DOM.input({ type: 'checkbox', name: 'runSort', onChange: this.changeCheckbox, checked: this.state.checkboxValue }),
         React.DOM.input({ type: 'text', name: 'inputFilter', className: 'inputText', placeholder: 'Напишите сюда буквы..', onChange: this.changeInputText, value: this.state.inputtextValue }),
         React.DOM.input({ type: 'button', value: 'Сброс', onClick: this.resetConditions }),
         React.DOM.select({ id: 'wordList', size: 5 },
-          ({}, this.state.options)
+          ({}, optWordArr)
         ),
       ),
     )
