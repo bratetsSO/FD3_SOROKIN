@@ -1,0 +1,37 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <title>Магазин</title>
+</head>
+
+<body>
+  <div id="container"></div>
+
+  <script src="https://unpkg.com/react@15/dist/react.js"></script>
+  <script src="https://unpkg.com/react-dom@15/dist/react-dom.js"></script>
+
+  <script src="ShopBlock.js"></script>
+  <script src="ShopItem.js"></script>
+  <link rel="stylesheet" type="text/css" href="ShopBlock.css" />
+
+  <script>
+
+    var shopNameText = 'Просто новый магазин';
+    var goodsArr = [
+      { name: 'товар 1', itemNumber: 1001, cost: 100, photoURL: 'https://shop.by/img/good_1.png', rest: 100 },
+      { name: 'товар 2', itemNumber: 1002, cost: 119.99, photoURL: 'https://shop.by/img/good_2.png', rest: 50 },
+      { name: 'товар 3', itemNumber: 1003, cost: 99.99, photoURL: 'https://shop.by/img/good_1.png', rest: 110 }
+    ];
+
+    ReactDOM.render(
+      React.createElement(ShopBlock, { shopName: shopNameText, items: goodsArr }),
+      document.getElementById('container')
+    );
+
+  </script>
+
+</body>
+
+</html>
