@@ -21,9 +21,9 @@
 
   render: function () {
 
-    var itemsArr = this.props.items.map( item => {
-      React.createElement(ShopItem, { key: item.itemNumber, itemName:item.name, itemCost:item.cost, itemRest:item.rest, itemPhotoURL:item.photoURL })
-    });
+    var itemsArr = this.props.items.map(item =>
+      React.createElement(ShopItem, { key: item.itemNumber, itemName: item.name, itemCost: item.cost, itemRest: item.rest, itemPhotoURL: item.photoURL })
+    );
 
     return React.DOM.div({ className: 'ShopBlock' },
       React.DOM.div({ className: 'ShopName' }, this.props.shopName),
