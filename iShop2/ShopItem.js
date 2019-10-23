@@ -8,20 +8,17 @@ var ShopItem = React.createClass({
         itemPhotoURL: React.PropTypes.string,
         itemRest: React.PropTypes.number,
         itemNumber: React.PropTypes.number,
+        cbClicked: React.PropTypes.func.isRequired,
+        isClicked: React.PropTypes.bool.isRequired,
     },
 
     getInitialState: function () {
-        return { trItemColor: "#F0F0F0", trItemDisplay: "table-row" };
+        return { trItemDisplay: "table-row" };
     },
 
-    changeBackgroundColor: function (EO) {
+    recItemClicked: function (EO) {
         console.log("Меняем цвет - " + EO.currentTarget.value);
-        //EO.currentTarget.bgColor = "orange"; // first variant
-        if (this.state.trItemColor != "orange") {
-            this.setState({ trItemColor: "orange" });
-        } else {
-            this.setState({ trItemColor: "#F0F0F0" });
-        }
+        this.props.cbClicked(this.props.itemNumber);
     },
 
     deleteItem: function (EO) {
@@ -31,12 +28,13 @@ var ShopItem = React.createClass({
             EO.stopPropagation();
         }
     },
+
     refItemPhoto: function (EO) {
         EO.stopPropagation();
     },
 
     render: function () {
-        return React.DOM.tr({ className: 'Good', onClick: this.changeBackgroundColor, style: { backgroundColor: this.state.trItemColor, display: this.state.trItemDisplay } },
+        return React.DOM.tr({ className: 'Good', onClick: this.recItemClicked, style: { backgroundColor: this.props.isClicked ? "orange" : "#F0F0F0", display: this.state.trItemDisplay } },
             React.DOM.td({ className: 'GoodName' }, this.props.itemName),
             React.DOM.td({ className: 'GoodCost' }, this.props.itemCost),
             React.DOM.td({ className: 'GoodPhotoURL' },

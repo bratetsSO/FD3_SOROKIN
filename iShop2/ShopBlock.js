@@ -19,10 +19,28 @@
     return { shopName: "Магазин 'Without Name'" }
   },
 
+  getInitialState: function () {
+    return { itemNumberClicked: null }
+  },
+
+  recItemClicked: function (itemNumber) {
+    console.log('кликнули по товару' + itemNumber);
+    this.setState({ itemNumberClicked: itemNumber });
+  },
+
   render: function () {
 
     var itemsArr = this.props.items.map(item =>
-      React.createElement(ShopItem, { key: item.itemNumber, itemName: item.name, itemCost: item.cost, itemRest: item.rest, itemPhotoURL: item.photoURL })
+      React.createElement(ShopItem, {
+        key: item.itemNumber,
+        itemNumber: item.itemNumber,
+        itemName: item.name,
+        itemCost: item.cost,
+        itemRest: item.rest,
+        itemPhotoURL: item.photoURL,
+        cbClicked: this.recItemClicked,
+        isClicked: (this.state.itemNumberClicked == item.itemNumber),
+      })
     );
 
     return React.DOM.div({ className: 'ShopBlock' },
