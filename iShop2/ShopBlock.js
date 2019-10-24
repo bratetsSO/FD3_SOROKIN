@@ -20,17 +20,24 @@
   },
 
   getInitialState: function () {
-    return { itemNumberClicked: null }
+    return { itemNumberClicked: null, itemsState: this.props.items }
   },
 
   recItemClicked: function (itemNumber) {
-    console.log('кликнули по товару' + itemNumber);
+    console.log('кликнули по товару ' + itemNumber);
     this.setState({ itemNumberClicked: itemNumber });
+  },
+
+  recItemDelete: function (itemNumber){
+    console.log('удаляем товар ' + itemNumber);
+    let itemsArr = this.state.itemsState;
+    itemsArr = itemsArr.filter(item => item.itemNumber != itemNumber);
+    this.setState({itemsState: itemsArr});//!!!
   },
 
   render: function () {
 
-    var itemsArr = this.props.items.map(item =>
+    var itemsArr = this.state.itemsState.map(item =>
       React.createElement(ShopItem, {
         key: item.itemNumber,
         itemNumber: item.itemNumber,
@@ -40,6 +47,7 @@
         itemPhotoURL: item.photoURL,
         cbClicked: this.recItemClicked,
         isClicked: (this.state.itemNumberClicked == item.itemNumber),
+        cbDeleted: this.recItemDelete,
       })
     );
 

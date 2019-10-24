@@ -10,6 +10,7 @@ var ShopItem = React.createClass({
         itemNumber: React.PropTypes.number,
         cbClicked: React.PropTypes.func.isRequired,
         isClicked: React.PropTypes.bool.isRequired,
+        cbDeleted: React.PropTypes.func.isRequired,
     },
 
     getInitialState: function () {
@@ -17,16 +18,14 @@ var ShopItem = React.createClass({
     },
 
     recItemClicked: function (EO) {
-        console.log("Меняем цвет - " + EO.currentTarget.value);
         this.props.cbClicked(this.props.itemNumber);
     },
 
     deleteItem: function (EO) {
         if (confirm("Удалить товар?")) {
-            //EO.target.parentElement.parentElement.style.display = "none"; //first variant
-            this.setState({ trItemDisplay: "none" });
-            EO.stopPropagation();
+            this.props.cbDeleted(this.props.itemNumber);
         }
+        EO.stopPropagation();
     },
 
     refItemPhoto: function (EO) {
@@ -34,7 +33,7 @@ var ShopItem = React.createClass({
     },
 
     render: function () {
-        return React.DOM.tr({ className: 'Good', onClick: this.recItemClicked, style: { backgroundColor: this.props.isClicked ? "orange" : "#F0F0F0", display: this.state.trItemDisplay } },
+        return React.DOM.tr({ className: 'Good', onClick: this.recItemClicked, style: { backgroundColor: this.props.isClicked ? "orange" : "#F0F0F0" } },
             React.DOM.td({ className: 'GoodName' }, this.props.itemName),
             React.DOM.td({ className: 'GoodCost' }, this.props.itemCost),
             React.DOM.td({ className: 'GoodPhotoURL' },
